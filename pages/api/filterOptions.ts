@@ -30,10 +30,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         countries,
       },
     });
-  } catch (error) {
-    const err = error as Error;
-    res.status(500).json({ success: false, message: err.message });
+  }catch (error) {
+  if (error instanceof Error) {
+    res.status(500).json({ success: false, message: error.message });
+  } else {
+    res.status(500).json({ success: false, message: "An unknown error occurred" });
   }
+}
 }
 
 export default handler;
